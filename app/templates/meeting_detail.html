@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}AgendaWeb - {{ meeting.title }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <div class="profile-header">
+        <h1>Meeting: {{ meeting.title }}</h1>
+        <p>
+            <strong>Title:</strong><br>
+            {{ meeting.title }}<br>
+            <strong>Sponsor:</strong><br>
+            {{ meeting.sponsor }}<br>
+            <strong>StartDate:</strong><br>
+            {{ meeting.startDate }}<br>
+            <strong>endDate:</strong><br>
+            {{ meeting.endDate }}<br>
+            <strong>participator:</strong><br>
+            {% for u in participators %}
+                {{ u.username }}<br>
+            {% endfor %}
+        </p>
+        <p>
+            {% if meeting.sponsor == current_user.username %}
+                <a href="{{ url_for('.editMeeting', title=meeting.title) }}">Edit meeting</a>
+            {% endif %}
+            {% if meeting.is_participator(current_user) %}
+                <a href="{{ url_for('main.quitMeeting', title=meeting.title) }}">Quit the meeting</a>
+            {% endif %}
+        </p>
+        
+</div>
+{% endblock %}

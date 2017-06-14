@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}AgendaWeb - Users{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>User List</h1>
+</div>
+<div class="table-responsible">
+	<table class="table table-striped table-hover">
+		<tbody>
+			<tr>
+				<td><strong>username</strong></td>
+				<td><strong>email</strong></td>
+				<td><strong>phone</strong></td>
+			</tr>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.username }}</td>
+					<td>{{ user.email }}</td>
+					<td>{{ user.phone }}</td>
+				</tr>
+	    	{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

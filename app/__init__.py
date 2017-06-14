@@ -7,8 +7,6 @@ from config import Config
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-mail = Mail()
-moment = Moment()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -21,8 +19,6 @@ def create_app():
 	Config.init_app(app)
 
 	bootstrap.init_app(app)
-	mail.init_app(app)
-	moment.init_app(app)
 	db.init_app(app)
 	login_manager.init_app(app)
 

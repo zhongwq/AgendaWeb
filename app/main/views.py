@@ -49,7 +49,8 @@ def createMeeting():
 		for i in form.participator.data:
 			u = User.query.filter_by(id=i).first()
 			if not newMeeting.addParticipator(u):
-				db.session.remove(newMeeting)
+				db.session.delete(newMeeting)
+				db.session.commit()
 				flash('Some participator is not availible!Fail to create new meeting!')
 				return redirect(url_for('main.showAllMeetings'))
 		flash('Create meeting successfully!')

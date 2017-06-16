@@ -1,8 +1,11 @@
-from datetime import datetime
+import datetime
+from time import sleep
 from flask import current_app, request
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db, login_manager
+from .email import send_email
+
 
 participate = db.Table('participate',
                       db.Column('meetingTitle', db.String(30), db.ForeignKey('meetings.title')),
@@ -32,6 +35,7 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class Meeting(db.Model):
     __tablename__ = 'meetings'
     id = db.Column(db.Integer, primary_key=True)
@@ -55,6 +59,7 @@ class Meeting(db.Model):
             db.session.commit()
             return True
 
+
     def deleteParticipator(self, user):
         if self.is_participator(user):
             self.participator.remove(user)
@@ -66,3 +71,22 @@ class Meeting(db.Model):
 
     def is_participator(self, user):
         return self.participator.filter(participate.c.participatorName == user.username).count() > 0
+
+    def sendEmailToAll(self):
+        temp = User.query.filter_by(username=self.sponsor).first()
+        send_email(temp.email, 'Meeting Reminder', 'email/reminder', user=temp, meeting=self)
+        for i in self.participator:
+            send_email(i.email, 'Meeting Reminder', 'email/reminder', user=i, meeting=self)
+ 
+def scan(app):
+    with app.app_context():
+        while True:
+            meetings = Meeting.query.all()
+            for m in meetings:
+                temp = m.startDate - datetime.datetime.now();
+                print (m.startDate)
+                print (datetime.datetime.now())
+                print (temp <= datetime.timedelta(0,1800) and temp > datetime.timedelta(0,1780))
+                if temp <= datetime.timedelta(0,1800) and temp > datetime.timedelta(0,1780):
+                    m.sendEmailToAll()
+            sleep(20)

@@ -4,6 +4,7 @@ from . import main
 from .forms import EditProfileFrom, MeetingFrom, SearchMeetingForm, EditMeetingProfileFrom
 from .. import db
 from ..models import User, Meeting
+from ..email import send_email
 
 @main.route('/')
 def index():

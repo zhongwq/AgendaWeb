@@ -1,0 +1,11 @@
+Dear {{ user.username }}
+
+Thank you for using AgendaWeb!
+
+Your Meeting named {{ meeting.title }} will start after 30 minutes. Please plan your time carefully!
+
+Sincerely,
+
+AgendaWeb Reminder
+
+Note: replies to this email address are not monitored.

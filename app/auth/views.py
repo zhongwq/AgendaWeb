@@ -41,6 +41,7 @@ def resetPassword():
 			user.password = form.password.data
 			flash('Your password has been reset!')
 			return redirect(url_for('auth.login'))
+	return render_template('reset_password.html', form=form)
 
 @auth.route('/logout')
 @login_required
